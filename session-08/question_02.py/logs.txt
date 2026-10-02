@@ -1,0 +1,67 @@
+def load_logs():
+    logs=[]
+    with open(r"C://Users//PENTiUM//Desktop//first//logs.txt","r") as f:
+        for line in f:
+            parts=line.strip().split(",")
+            logs.append(parts)
+        return logs
+def count_successful_logins():
+    logs=load_logs()
+    count=0
+    for log in logs:
+        if log[1]=="LOGIN" and log[2]=="200":
+            count+=1
+    print("تعداد لاگین موفق:",count)
+    return count
+def count_failed_logins():
+    logs=load_logs()
+    count=0
+    for log in logs:
+        if log[1]=="LOGIN" and log[2]=="403":
+            count+=1
+    print("تعداد لاگ های ناموفق:",count)
+    return count
+def find_suspicious_users():
+    logs=load_logs()
+    fail_count={}
+    for log in logs:
+        name=log[0]
+        code=log[2]
+        if code=="403":
+            if name in fail_count:
+                fail_count[name]+=1
+            else:
+                fail_count[name]=1
+    suspicious=[]
+    for name, count in fail_count.items():
+        if count>=3:
+            suspicious.append(name)
+    print("کاربران مشکوک:",suspicious)
+    return suspicious 
+def generate_report():
+    logs=load_logs()
+    success=count_successful_logins()
+    fail= count_failed_logins()
+    suspicious=find_suspicious_users()
+    activity={}
+    for log in logs:
+        name=log[0]
+        if name in activity:
+            activity[name]+=1
+        else:
+            activity[name]=1
+    print("\n----گزارش نهایی----")
+    print("تعداد لاگین موفق:",success)
+    print("تعداد لاگین ناموفق:",fail)
+    print("کاربران مشکوک:",suspicious)
+    print("نعداد عملیات هر کاربر:",activity)
+generate_report()                    
+
+            
+                
+                
+        
+
+        
+        
+
